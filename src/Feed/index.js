@@ -1,24 +1,42 @@
 import React, {Component, useState, useEffect} from 'react';
 import {FlatList, Text, View} from 'react-native';
 
-import {Description, Post, PostImage, Header, Avatar, Name} from './styles';
+import {
+    Avatar,
+    Description,
+    Header,
+    Loading,
+    Name,
+    Post,
+    PostImage} from './styles';
 
 export default function Feed() {
+
+    const postsPerPage = 5;
 
     // https://stackoverflow.com/questions/2917175/return-multiple-values-in-javascript
     const [feed, setFeed] = useState([]);
     const [page, setPage] = useState(1);
+    const [maxPages, setMaxPages] = useState(0);
+    const [loading, setLoading] = useState(false);
 
-    async function loadPage(pageNumber = 1) {
+    async function loadPage(pageNumber = page) {
+        if (maxPages && pageNumber > maxPages) return;
+
+        setLoading(true);
+
         const response = await fetch('http://10.0.0.104:3000/feed?_expand=author&_limit=5&_page=' + pageNumber);
         const data = await response.json();
+        const totalItems = await response.headers.get('X-Total-Count');
 
+        setMaxPages(Math.ceil(totalItems / 5));
         setFeed(feed.concat(data));
         setPage(pageNumber + 1);
+        setLoading(false);
     }
 
     useEffect(() => {
-        loadPage(page);
+        loadPage();
     }, []);
 
     return (
@@ -26,8 +44,9 @@ export default function Feed() {
             <FlatList
                 data={feed}                
                 keyExtractor={post => String(post.id)}
-                onEndReached={() => loadPage(page)}
+                onEndReached={() => loadPage()}
                 onEndReachedThreshold={0.1}
+                ListFooterComponent={loading && <Loading />}
                 renderItem={({item}) => (
                     <Post>
                         <Header>

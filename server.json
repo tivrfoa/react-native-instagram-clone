@@ -159,6 +159,14 @@
         "aspectRatio": 0.834,
         "description": "Are you working for your dreams?",
         "authorId": 1
+      },
+      {
+        "id": 21,
+        "image": "https://rocketseat-cdn.s3-sa-east-1.amazonaws.com/instagram-clone/6.jpeg",
+        "small": "https://rocketseat-cdn.s3-sa-east-1.amazonaws.com/instagram-clone/small/6.jpeg",
+        "aspectRatio": 0.834,
+        "description": "edge case ...",
+        "authorId": 6
       }
     ],
     "authors": [
@@ -186,6 +194,11 @@
         "id": 5,
         "name": "jpedroschmitz",
         "avatar": "https://avatars0.githubusercontent.com/u/26466516?s=50&v=4"
+      },
+      {
+        "id": 6,
+        "name": "tivrfoa",
+        "avatar": "https://avatars1.githubusercontent.com/u/30683?s=460&v=4"
       }
     ]
   }
