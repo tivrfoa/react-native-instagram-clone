@@ -30,8 +30,12 @@ $ yarn add json-server -D
 # -w makes it watch changes
 $ yarn json-server server.json -d 1000 -w
 
+# or use your IP if you are testing on Android:
+$ yarn json-server --host 10.0.0.104 server.json -d 1000 -w
+
 $ yarn add react-navigation react-native-gesture-handler react-native-reanimated
 
 # Add code to MainActivity.java
 # https://github.com/kmagiera/react-native-gesture-handler/blob/master/docs/getting-started.md
 
+$ yarn add styled-components
