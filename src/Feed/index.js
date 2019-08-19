@@ -7,23 +7,27 @@ export default function Feed() {
 
     // https://stackoverflow.com/questions/2917175/return-multiple-values-in-javascript
     const [feed, setFeed] = useState([]);
+    const [page, setPage] = useState(1);
+
+    async function loadPage(pageNumber = 1) {
+        const response = await fetch('http://10.0.0.104:3000/feed?_expand=author&_limit=5&_page=' + pageNumber);
+        const data = await response.json();
+
+        setFeed(feed.concat(data));
+        setPage(pageNumber + 1);
+    }
 
     useEffect(() => {
-        async function loadFeed() {
-            const response = await fetch('http://10.0.0.104:3000/feed?_expand=author&_limit=5&_page=1');
-            const data = await response.json();
-
-            setFeed(data);
-        }
-
-        loadFeed();
+        loadPage(page);
     }, []);
 
     return (
         <View>
             <FlatList
-                data={feed}
+                data={feed}                
                 keyExtractor={post => String(post.id)}
+                onEndReached={() => loadPage(page)}
+                onEndReachedThreshold={0.1}
                 renderItem={({item}) => (
                     <Post>
                         <Header>
