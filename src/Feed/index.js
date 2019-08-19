@@ -1,4 +1,4 @@
-import React, {Component, useState, useEffect} from 'react';
+import React, { Component, useCallback, useEffect, useState } from 'react';
 import {FlatList, Text, View} from 'react-native';
 
 import {
@@ -19,6 +19,7 @@ export default function Feed() {
     const [maxPages, setMaxPages] = useState(0);
     const [loading, setLoading] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
+    const [viewable, setViewable] = useState([]);
 
     async function loadPage(pageNumber = page, shouldRefresh = false) {
         if (maxPages && pageNumber > maxPages) return;
@@ -47,6 +48,10 @@ export default function Feed() {
         setRefreshing(false);
     }
 
+    const handleViewableChanged = useCallback(({ changed }) => {
+        setViewable(changed.map(({ item }) => item.id));
+    }, []);
+
     return (
         <View>
             <FlatList
@@ -55,6 +60,8 @@ export default function Feed() {
                 onEndReached={() => loadPage()}
                 onEndReachedThreshold={0.1}
                 onRefresh={refreshList}
+                onViewableItemsChanged={handleViewableChanged}
+                viewabilityConfig={{ viewAreaCoveragePercentThreshold: 10 }}
                 refreshing={refreshing}
                 ListFooterComponent={loading && <Loading />}
                 renderItem={({item}) => (
@@ -65,6 +72,7 @@ export default function Feed() {
                         </Header>
 
                         <LazyImage
+                            shouldLoad={viewable.includes(item.id)}
                             aspectRatio={item.aspectRatio}
                             smallSource={{uri: item.small}}
                             source={{uri: item.image}} />
