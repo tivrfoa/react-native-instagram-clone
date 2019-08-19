@@ -7,12 +7,11 @@ import {
     Header,
     Loading,
     Name,
-    Post,
-    PostImage} from './styles';
+    Post} from './styles';
+
+import LazyImage from '../components/LazyImage';
 
 export default function Feed() {
-
-    const postsPerPage = 5;
 
     // https://stackoverflow.com/questions/2917175/return-multiple-values-in-javascript
     const [feed, setFeed] = useState([]);
@@ -65,7 +64,10 @@ export default function Feed() {
                             <Name>{item.author.name}</Name>
                         </Header>
 
-                        <PostImage ratio={item.aspectRatio} source={{uri: item.image}} />
+                        <LazyImage
+                            aspectRatio={item.aspectRatio}
+                            smallSource={{uri: item.small}}
+                            source={{uri: item.image}} />
 
                         <Description>
                             <Name>{item.author.name}</Name>   {item.description}
