@@ -2,5 +2,9 @@ import React, {Component} from 'react';
 import {Text, View} from 'react-native';
 
 export default function App() {
-  return <View />;
+  return (
+    <View>
+        <Text>Nice</Text>
+    </View>
+  );
 }
